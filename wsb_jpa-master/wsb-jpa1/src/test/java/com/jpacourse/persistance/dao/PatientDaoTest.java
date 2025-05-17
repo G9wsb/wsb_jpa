@@ -111,7 +111,6 @@ public class PatientDaoTest
     void shouldThrowOptimisticLockExceptionWhenModifyingSameEntity() {
         TransactionTemplate tx = new TransactionTemplate(transactionManager);
 
-        // 1. Zapis pacjenta
         Long patientId = tx.execute(status -> {
             PatientEntity patient = new PatientEntity();
             patient.setFirstName("Jan");
@@ -124,7 +123,6 @@ public class PatientDaoTest
             return patient.getId();
         });
 
-        // 2. Pobierz dwie niezależne wersje pacjenta
         PatientEntity[] p1 = new PatientEntity[1];
         PatientEntity[] p2 = new PatientEntity[1];
 
@@ -138,14 +136,12 @@ public class PatientDaoTest
             return null;
         });
 
-        // 3. Zmodyfikuj p1 – wersja podskoczy do 1
         tx.execute(status -> {
             p1[0].setFirstName("Marek");
             patientDao.update(p1[0]);
             return null;
         });
 
-        // 4. Spróbuj zapisać przestarzałego p2 – oczekiwany konflikt
         assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
             patientDao.update(p2[0]);
             entityManager.flush(); // MUSI być tutaj
