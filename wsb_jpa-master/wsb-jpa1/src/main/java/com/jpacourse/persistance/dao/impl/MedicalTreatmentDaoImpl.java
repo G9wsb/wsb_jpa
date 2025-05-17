@@ -1,0 +1,11 @@
+package com.jpacourse.persistance.dao.impl;
+
+import com.jpacourse.persistance.dao.DoctorDao;
+import com.jpacourse.persistance.dao.MedicalTreatmentDao;
+import com.jpacourse.persistance.entity.DoctorEntity;
+import com.jpacourse.persistance.entity.MedicalTreatmentEntity;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class MedicalTreatmentDaoImpl extends AbstractDao<MedicalTreatmentEntity, Long> implements MedicalTreatmentDao {
+}
